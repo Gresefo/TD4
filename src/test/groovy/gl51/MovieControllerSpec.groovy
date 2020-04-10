@@ -2,6 +2,7 @@ package gl51
 
 import gl51.data.MovieRequest
 import gl51.movie.data.Movie
+import gl51.movie.service.MovieClient
 import io.micronaut.core.type.Argument
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.annotation.Client
@@ -10,6 +11,7 @@ import io.micronaut.test.annotation.MicronautTest
 import io.micronaut.http.client.RxHttpClient
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
+import io.micronaut.test.annotation.MockBean
 import io.reactivex.Flowable
 import io.reactivex.Maybe
 import spock.lang.AutoCleanup
@@ -42,5 +44,13 @@ class MovieControllerSpec extends Specification {
         )
         expect:
             response.status == HttpStatus.CREATED
+    }
+
+    @MockBean()
+    MovieClient movieClient()
+    {
+        def mock Mock(MovieClient)
+        mock.getMovieDetail("azer") >> new Movie(imdbID: "azer", title: "moviemovie")
+        mock
     }
 }
